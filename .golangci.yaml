@@ -204,13 +204,11 @@ linters-settings:
     min-complexity: 10
 
   gomnd:
-    settings:
-      mnd:
-        # Ignore 'assign': these are common, and clear in use e.g. timeout := 5 * time.Second
-        checks: "argument,case,condition,operation,return"
+    # Ignore 'assign': these are common, and clear in use e.g. timeout := 5 * time.Second
+    checks: ["argument","case","condition","operation","return"]
 
   govet:
-    shadow: true
+    enable: ["shadow"]
 
   nakedret:
     # Don't allow naked return, EVER
