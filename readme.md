@@ -2,6 +2,28 @@
 
 This is a skeleton project for a Go CLI application. It is intended to be used as a starting point for new CLI applications.
 
+## Usage
+
+To use this project as a starting point for a new CLI application, follow these steps:
+1. Clone this repository.
+2. Rename the `skeleton-go-cli` directory to the name of your new application.
+3. Update the `go.mod` file to reflect the new module name.
+4. Replace `skeleton-go-cli` with the new application name in all files.
+5. Implement the desired functionality for the new CLI application.
+
+You can basically replace the `skeleton-go-cli` with your new application name and start building your CLI application.
+
+## What's Included
+
+This project includes the following components:
+- A basic CLI application structure.
+- A simple command with a subcommand.
+- Build and test scripts.
+- A `Makefile` with common tasks.
+- A `Dockerfile` for building a Docker image.
+- A GitHub Actions workflow for versioning.
+- golangci-lint for linting and static analysis.
+
 ## Go Implementation Rules
 
 ### TL;DR: Enhance flexibility and maintainability by:
