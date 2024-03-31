@@ -54,7 +54,7 @@ func (vc *Viper) BuildConfig() (*Config, error) {
 
 	cfg, err := vc.unmarshall()
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshalling config -> %w", err)
+		return nil, fmt.Errorf("error unmarshalling config: %w", err)
 	}
 
 	return cfg, nil
@@ -66,7 +66,7 @@ func (vc *Viper) readConfig() error {
 
 	err := vc.Viper.ReadInConfig()
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return fmt.Errorf("error reading local config file -> %w", err)
+		return fmt.Errorf("error reading local config file: %w", err)
 	}
 
 	return nil
@@ -76,7 +76,7 @@ func (vc *Viper) unmarshall() (*Config, error) {
 	cfg := Config{}
 
 	if err := vc.Viper.Unmarshal(&cfg); err != nil {
-		return nil, fmt.Errorf("error unmarshalling config -> %w", err)
+		return nil, fmt.Errorf("error unmarshalling config: %w", err)
 	}
 
 	return &cfg, nil

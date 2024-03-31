@@ -1,117 +1,123 @@
 package config_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/spf13/cobra"
+	"github.com/stretchr/testify/assert"
 	"github.com/twk/skeleton-go-cli/internal/config"
 )
 
 func TestViper_SetFlags(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
-		cmd   *cobra.Command
 		binds []config.BindDetail
 	}
+
 	type want struct {
 		err error
 	}
+
 	tests := map[string]struct {
-		name    string
-		v       *Viper
-		args    args
-		wantErr bool
+		args args
+		want want
 	}{
-		//{
-		//	name: "Test bool flag",
-		//	v:    &Viper{},
-		//	args: args{
-		//		cmd: &cobra.Command{},
-		//		binds: []BindDetail{
-		//			{
-		//				Flag: FlagDetail{
-		//					Name:         "boolFlag",
-		//					DefaultValue: true,
-		//					Description:  "A boolean flag",
-		//				},
-		//			},
-		//		},
-		//	},
-		//	wantErr: false,
-		//},
-		//{
-		//	name: "Test string flag",
-		//	v:    &Viper{},
-		//	args: args{
-		//		cmd: &cobra.Command{},
-		//		binds: []BindDetail{
-		//			{
-		//				Flag: FlagDetail{
-		//					Name:         "stringFlag",
-		//					DefaultValue: "default",
-		//					Description:  "A string flag",
-		//				},
-		//			},
-		//		},
-		//	},
-		//	wantErr: false,
-		//},
-		//{
-		//	name: "Test int flag",
-		//	v:    &Viper{},
-		//	args: args{
-		//		cmd: &cobra.Command{},
-		//		binds: []BindDetail{
-		//			{
-		//				Flag: FlagDetail{
-		//					Name:         "intFlag",
-		//					DefaultValue: 1,
-		//					Description:  "An integer flag",
-		//				},
-		//			},
-		//		},
-		//	},
-		//	wantErr: false,
-		//},
-		//{
-		//	name: "Test duration flag",
-		//	v:    &Viper{},
-		//	args: args{
-		//		cmd: &cobra.Command{},
-		//		binds: []BindDetail{
-		//			{
-		//				Flag: FlagDetail{
-		//					Name:         "durationFlag",
-		//					DefaultValue: time.Second,
-		//					Description:  "A duration flag",
-		//				},
-		//			},
-		//		},
-		//	},
-		//	wantErr: false,
-		//},
-		//{
-		//	name: "Test unsupported flag",
-		//	v:    &Viper{},
-		//	args: args{
-		//		cmd: &cobra.Command{},
-		//		binds: []BindDetail{
-		//			{
-		//				Flag: FlagDetail{
-		//					Name:         "unsupportedFlag",
-		//					DefaultValue: []string{"unsupported"},
-		//					Description:  "An unsupported flag",
-		//				},
-		//			},
-		//		},
-		//	},
-		//	wantErr: true,
-		//},
+		"Test valid flag": {
+			args: args{
+				binds: []config.BindDetail{
+					{Flag: config.FlagDetail{Name: "boolFlag", DefaultValue: true, Description: "A boolean flag"}},
+					{Flag: config.FlagDetail{Name: "stringFlag", DefaultValue: "default", Description: "A string flag"}},
+					{Flag: config.FlagDetail{Name: "intFlag", DefaultValue: 1, Description: "An integer flag"}},
+					{Flag: config.FlagDetail{Name: "durationFlag", DefaultValue: 1, Description: "A duration flag"}},
+				},
+			},
+			want: want{err: nil},
+		},
+		"Test unsupported flag": {
+			args: args{
+				binds: []config.BindDetail{
+					{Flag: config.FlagDetail{Name: "unsupportedFlag", DefaultValue: []string{"unsupported"}, Description: "An unsupported flag"}},
+				},
+			},
+			want: want{err: errors.New("unsupported flag type for flag unsupportedFlag")},
+		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.v.SetFlags(tt.args.cmd, tt.args.binds); (err != nil) != tt.wantErr {
-				t.Errorf("Viper.SetFlags() error = %v, wantErr %v", err, tt.wantErr)
+	for name, tt := range tests {
+		tt := tt
+
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			cmd := &cobra.Command{}
+			v := config.NewViper()
+
+			err := v.SetFlags(cmd, tt.args.binds)
+			if tt.want.err != nil {
+				assert.EqualError(t, err, tt.want.err.Error())
 			}
+		})
+	}
+}
+
+func TestViper_Binds(t *testing.T) {
+	type args struct {
+		binds []config.BindDetail
+		env   map[string]string
+	}
+
+	type want struct {
+		expected interface{}
+		err      error
+	}
+
+	tests := map[string]struct {
+		args args
+		want want
+	}{
+		"bind with flag": {
+			args: args{
+				binds: []config.BindDetail{
+					{Flag: config.FlagDetail{Name: "boolFlag", DefaultValue: true, Description: "A boolean flag"}, MapKey: "boolFlag", EnvName: "BOOL_ENV"},
+				},
+			},
+			want: want{expected: true},
+		},
+		"bind with env": {
+			args: args{
+				binds: []config.BindDetail{
+					{MapKey: "boolFlag", EnvName: "BOOL_ENV"},
+				},
+				env: map[string]string{
+					"BOOL_ENV": "true",
+				},
+			},
+			want: want{expected: "true"},
+		},
+	}
+	for name, tt := range tests {
+		tt := tt
+
+		t.Run(name, func(t *testing.T) {
+			for k, v := range tt.args.env {
+				t.Setenv(k, v)
+			}
+
+			cmd := &cobra.Command{}
+			v := config.NewViper()
+
+			err := v.SetFlags(cmd, tt.args.binds)
+			assert.NoError(t, err)
+
+			err = v.Binds(cmd, tt.args.binds)
+			if tt.want.err != nil {
+				assert.EqualError(t, err, tt.want.err.Error())
+				return
+			}
+
+			value := v.Viper.Get(tt.args.binds[0].MapKey)
+			assert.Equal(t, tt.want.expected, value)
 		})
 	}
 }
