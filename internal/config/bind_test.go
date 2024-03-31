@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
+
 	"github.com/twk/skeleton-go-cli/internal/config"
 )
 
