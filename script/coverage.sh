@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-go test ./... -covermode=atomic -coverprofile=coverage.out
+packages=$(go list ./... \
+  | grep -v "^github.com/twk/skeleton-go-cli/cmd" \
+)
+
+go test $packages -covermode=atomic -coverprofile=coverage.out
 
 EXPECTED_COVERAGE=${EXPECTED_COVERAGE:-80}
 function die() {
