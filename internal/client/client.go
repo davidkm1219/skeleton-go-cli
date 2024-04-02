@@ -1,3 +1,4 @@
+// Package client provides the client for making HTTP requests.
 package client
 
 import (
