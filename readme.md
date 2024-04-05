@@ -1,6 +1,6 @@
 # skeleton-go-cli
 
-This is a skeleton project for a Go CLI application. It is intended to be used as a starting point for new CLI applications.
+This is my take of skeleton project for a Go CLI application. It is intended to be used as a starting point for new CLI applications.
 
 ## Usage
 
@@ -18,17 +18,26 @@ You can basically replace the `skeleton-go-cli` with your new application name a
 This project includes the following components:
 - A basic CLI application structure.
 - A simple command with a subcommand.
-- Build and test scripts.
+- Makefile for Build and test scripts.
 - A `Makefile` with common tasks.
 - A `Dockerfile` for building a Docker image.
-- A GitHub Actions workflow for versioning.
+- A GitHub Actions workflow for versioning
+- A GitHub Actions workflow for PR checks. It will check linting, test coverage and build.
 - golangci-lint for linting and static analysis.
 
-## Go Implementation Rules
+## Sample Service, Get Photos from jsonplaceholder.typicode.com
+
+This project includes a sample service that fetches photos from jsonplaceholder.typicode.com. The service is implemented in the `photos` package and is used by the `get` command to fetch.
+```bash
+make build
+./skeleton-go-cli get 10 # will get 10 photos concurrently
+```
+
+## Go Implementation Guidelines 
 
 ### TL;DR: Enhance flexibility and maintainability by:
-- Improving Testability: Use dependency injection and factory patterns for easier mocking and isolated testing. Aim for test coverage above 80%.
--  Adhering to SOLID Principles: Extend functionalities without altering existing code to preserve functionality and ensure stability.
+- Testability: Use dependency injection and factory patterns for easier mocking and isolated testing. Aim for test coverage above 80%.
+- Adhering to SOLID Principles: Extend functionalities without altering existing code to preserve functionality and ensure stability.
 - Embracing DRY: Centralize logic to avoid duplications and inconsistencies.
 - Separating Concerns: Keep modules focused on their intended functionality to simplify maintenance and reduce conflicts.
 - Maintaining Code Hygiene: Standardize coding practices, keep methods concise, and reduce conditional complexity for readability and quicker onboarding.

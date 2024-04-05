@@ -7,6 +7,7 @@ skeleton-go-cli
 
 # IDE
 .idea
+.run
 .vscode
 
 # ENV
@@ -21,7 +22,7 @@ skeleton-go-cli
 # Golang
 dist
 vendor
-coverage.out
+coverage.*
 
 # Sonar
 .scannerwork
