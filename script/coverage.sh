@@ -2,6 +2,7 @@
 
 packages=$(go list ./... \
   | grep -v "^github.com/twk/skeleton-go-cli/cmd" \
+  | grep -v "/mocks" \
 )
 
 go test $packages -covermode=atomic -coverprofile=coverage.out
