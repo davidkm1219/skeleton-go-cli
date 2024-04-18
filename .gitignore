@@ -1,6 +1,6 @@
 # executables
-./main
-./skeleton-go-cli
+/main
+/skeleton-go-cli
 
 # Mac
 .DS_Store
