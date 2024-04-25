@@ -11,9 +11,9 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"github.com/twk/skeleton-go-cli/internal/logger"
 	"github.com/twk/skeleton-go-cli/internal/photos"
 	mock_photos "github.com/twk/skeleton-go-cli/internal/photos/mocks"
-	"go.uber.org/zap"
 )
 
 func TestGetPhotos(t *testing.T) {
@@ -81,7 +81,7 @@ func TestGetPhotos(t *testing.T) {
 			cl := mock_photos.NewMockclient(ctrl)
 			tt.fields.mockOperation(cl)
 
-			s := photos.NewService(cl, zap.NewNop())
+			s := photos.NewService(cl, logger.NewNop())
 
 			result, err := s.GetPhotos(context.Background(), 1)
 			if tt.want.err != nil {
@@ -151,7 +151,7 @@ func TestGetPhotosConcurrently(t *testing.T) {
 			cl := mock_photos.NewMockclient(ctrl)
 			tt.fields.mockOperation(cl)
 
-			s := photos.NewService(cl, zap.NewNop())
+			s := photos.NewService(cl, logger.NewNop())
 
 			result := s.GetPhotosConcurrently(context.Background(), tt.args.concurrency)
 
