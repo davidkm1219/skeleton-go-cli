@@ -5,15 +5,15 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"go.uber.org/zap"
 
 	"github.com/twk/skeleton-go-cli/internal/config"
+	"github.com/twk/skeleton-go-cli/internal/logger"
 )
 
 const appName = "skeleton-go-cli"
 
 // NewRootCommand creates a new cobra command for the root command
-func NewRootCommand(logger *zap.Logger) (*cobra.Command, error) {
+func NewRootCommand(l *logger.Logger) (*cobra.Command, error) {
 	v := config.NewViper()
 
 	b := []config.BindDetail{
@@ -37,7 +37,7 @@ This CLI is used to interact with the skeleton-go-cli application.`,
 		return nil, fmt.Errorf("error initializing flags: %w", err)
 	}
 
-	rootCmd.AddCommand(NewGetCmd(v, logger))
+	rootCmd.AddCommand(NewGetCmd(v, l))
 
 	return rootCmd, nil
 }

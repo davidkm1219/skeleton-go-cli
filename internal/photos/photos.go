@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/twk/skeleton-go-cli/internal/logger"
 	"go.uber.org/zap"
 )
 
@@ -35,11 +36,11 @@ type client interface {
 // Service provides the operations for handling photos operations
 type Service struct {
 	client client
-	log    *zap.Logger
+	log    *logger.Logger
 }
 
 // NewService creates a new Service for handling photos operations
-func NewService(c client, log *zap.Logger) *Service {
+func NewService(c client, log *logger.Logger) *Service {
 	return &Service{
 		client: c,
 		log:    log,

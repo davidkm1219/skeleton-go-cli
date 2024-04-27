@@ -7,15 +7,16 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/twk/skeleton-go-cli/internal/client"
-	"github.com/twk/skeleton-go-cli/internal/photos"
 	"go.uber.org/zap"
 
+	"github.com/twk/skeleton-go-cli/internal/client"
 	"github.com/twk/skeleton-go-cli/internal/config"
+	"github.com/twk/skeleton-go-cli/internal/logger"
+	"github.com/twk/skeleton-go-cli/internal/photos"
 )
 
 // NewGetCmd creates a new cobra command for the get command
-func NewGetCmd(v *config.Viper, l *zap.Logger) *cobra.Command {
+func NewGetCmd(v *config.Viper, l *logger.Logger) *cobra.Command {
 	b := []config.BindDetail{
 		{Flag: config.FlagDetail{Name: "timeout", Shorthand: "t", Description: "Sets the maximum duration for the request to complete before it is forcefully terminated.", DefaultValue: "5s"}, MapKey: "get.timeout"},
 	}
@@ -41,7 +42,7 @@ func NewGetCmd(v *config.Viper, l *zap.Logger) *cobra.Command {
 	return cmd
 }
 
-func get(v *config.Viper, l *zap.Logger, concurrency int) error {
+func get(v *config.Viper, l *logger.Logger, concurrency int) error {
 	cfg, err := v.BuildConfig()
 	if err != nil {
 		return fmt.Errorf("error building config: %w", err)
