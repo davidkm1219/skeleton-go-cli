@@ -15,17 +15,17 @@ type Viper struct {
 
 // BindDetail defines the structure for holding flag information.
 type BindDetail struct {
-	Flag    FlagDetail
-	EnvName string
-	MapKey  string
+	Flag         FlagDetail
+	EnvName      string
+	MapKey       string
+	DefaultValue interface{}
 }
 
 // FlagDetail defines the structure for holding flag information.
 type FlagDetail struct {
-	Name         string
-	Shorthand    string
-	Description  string
-	DefaultValue interface{}
+	Name        string
+	Shorthand   string
+	Description string
 }
 
 // NewViper creates a new viper configuration.

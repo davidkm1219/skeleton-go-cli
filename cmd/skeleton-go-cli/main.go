@@ -10,6 +10,7 @@ import (
 
 func main() {
 	log := logger.NewLogger(nil)
+	defer log.Sync()
 
 	cmd, err := commands.NewRootCommand(log)
 	if err != nil {

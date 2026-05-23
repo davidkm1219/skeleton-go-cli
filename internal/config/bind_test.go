@@ -28,10 +28,10 @@ func TestViper_SetFlags(t *testing.T) {
 		"Test valid flag": {
 			args: args{
 				binds: []config.BindDetail{
-					{Flag: config.FlagDetail{Name: "boolFlag", DefaultValue: true, Description: "A boolean flag"}},
-					{Flag: config.FlagDetail{Name: "stringFlag", DefaultValue: "default", Description: "A string flag"}},
-					{Flag: config.FlagDetail{Name: "intFlag", DefaultValue: 1, Description: "An integer flag"}},
-					{Flag: config.FlagDetail{Name: "durationFlag", DefaultValue: 1, Description: "A duration flag"}},
+					{Flag: config.FlagDetail{Name: "boolFlag", Description: "A boolean flag"}, DefaultValue: true},
+					{Flag: config.FlagDetail{Name: "stringFlag", Description: "A string flag"}, DefaultValue: "default"},
+					{Flag: config.FlagDetail{Name: "intFlag", Description: "An integer flag"}, DefaultValue: 1},
+					{Flag: config.FlagDetail{Name: "durationFlag", Description: "A duration flag"}, DefaultValue: 1},
 				},
 			},
 			want: want{err: nil},
@@ -39,7 +39,7 @@ func TestViper_SetFlags(t *testing.T) {
 		"Test unsupported flag": {
 			args: args{
 				binds: []config.BindDetail{
-					{Flag: config.FlagDetail{Name: "unsupportedFlag", DefaultValue: []string{"unsupported"}, Description: "An unsupported flag"}},
+					{Flag: config.FlagDetail{Name: "unsupportedFlag", Description: "An unsupported flag"}, DefaultValue: []string{"unsupported"}},
 				},
 			},
 			want: want{err: errors.New("unsupported flag type for flag unsupportedFlag")},
@@ -80,7 +80,7 @@ func TestViper_Binds(t *testing.T) {
 		"bind with flag": {
 			args: args{
 				binds: []config.BindDetail{
-					{Flag: config.FlagDetail{Name: "boolFlag", DefaultValue: true, Description: "A boolean flag"}, MapKey: "boolFlag", EnvName: "BOOL_ENV"},
+					{Flag: config.FlagDetail{Name: "boolFlag", Description: "A boolean flag"}, DefaultValue: true, MapKey: "boolFlag", EnvName: "BOOL_ENV"},
 				},
 			},
 			want: want{expected: true},

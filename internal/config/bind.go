@@ -25,7 +25,7 @@ func (vc *Viper) SetFlagAndBind(cmd *cobra.Command, binds []BindDetail) error {
 func (vc *Viper) SetFlags(cmd *cobra.Command, binds []BindDetail) error {
 	for _, b := range binds {
 		if b.Flag.Name != "" {
-			switch defaultValue := b.Flag.DefaultValue.(type) {
+			switch defaultValue := b.DefaultValue.(type) {
 			case bool:
 				cmd.PersistentFlags().BoolP(b.Flag.Name, b.Flag.Shorthand, defaultValue, b.Flag.Description)
 			case string:
@@ -46,6 +46,10 @@ func (vc *Viper) SetFlags(cmd *cobra.Command, binds []BindDetail) error {
 // Binds binds flags based on provided details.
 func (vc *Viper) Binds(cmd *cobra.Command, binds []BindDetail) error {
 	for _, b := range binds {
+		if b.DefaultValue != nil {
+			vc.Viper.SetDefault(b.MapKey, b.DefaultValue)
+		}
+
 		if b.EnvName != "" {
 			if err := vc.bindEnvDetails(b.MapKey, b.EnvName); err != nil {
 				return fmt.Errorf("failed to bind environment variable: %w", err)

@@ -18,7 +18,7 @@ import (
 // NewGetCmd creates a new cobra command for the get command
 func NewGetCmd(v *config.Viper, l *logger.Logger) *cobra.Command {
 	b := []config.BindDetail{
-		{Flag: config.FlagDetail{Name: "timeout", Shorthand: "t", Description: "Sets the maximum duration for the request to complete before it is forcefully terminated.", DefaultValue: "5s"}, MapKey: "get.timeout"},
+		{Flag: config.FlagDetail{Name: "timeout", Shorthand: "t", Description: "Sets the maximum duration for the request to complete before it is forcefully terminated."}, DefaultValue: "5s", MapKey: "get.timeout"},
 	}
 
 	cmd := &cobra.Command{

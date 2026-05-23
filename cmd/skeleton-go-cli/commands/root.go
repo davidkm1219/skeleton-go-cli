@@ -17,9 +17,9 @@ func NewRootCommand(l *logger.Logger) (*cobra.Command, error) {
 	v := config.NewViper()
 
 	b := []config.BindDetail{
-		{Flag: config.FlagDetail{Name: "config", Description: fmt.Sprintf("Specifies the path to the configuration file for %s.", appName), DefaultValue: "./config.yaml"}, MapKey: "config_path"},
-		{Flag: config.FlagDetail{Name: "log-level", Description: "Determines the logging verbosity level for the application. Available options are 'debug', 'info', 'warn', and 'error'.", DefaultValue: ""}, EnvName: "LOG_LEVEL", MapKey: "log_level"},
-		{Flag: config.FlagDetail{Name: "stacktrace", Description: "Enables or disables the inclusion of stack traces in the log output.", DefaultValue: false}, EnvName: "STACKTRACE", MapKey: "stacktrace"},
+		{Flag: config.FlagDetail{Name: "config", Description: fmt.Sprintf("Specifies the path to the configuration file for %s.", appName)}, DefaultValue: "./config.yaml", MapKey: "config_path"},
+		{Flag: config.FlagDetail{Name: "log-level", Description: "Determines the logging verbosity level for the application. Available options are 'debug', 'info', 'warn', and 'error'."}, DefaultValue: "", EnvName: "LOG_LEVEL", MapKey: "log_level"},
+		{Flag: config.FlagDetail{Name: "stacktrace", Description: "Enables or disables the inclusion of stack traces in the log output."}, DefaultValue: false, EnvName: "STACKTRACE", MapKey: "stacktrace"},
 	}
 
 	rootCmd := &cobra.Command{
